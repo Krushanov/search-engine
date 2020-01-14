@@ -84,14 +84,16 @@
                     Search Engine System
                 </div>
                 <div class="links">
-                    <input type="text" placeholder="Введите слово или фразу для поиска">
-                    <button>Найти</button>
+                    <form method="get" action="{{ action('SearchController@index', "abracadabra") }}">
+                        <input id="request_text" type="text" placeholder="Введите слово или фразу для поиска">
+                        <button>Найти</button>
+                    </form>
                 </div>
                 @isset($results)
                 <div class="results">
                     <b>Результаты поиска</b><br>
                     @foreach ($results as $result)
-                        <a>{{ $result }}</a><br>
+                        <a href="{{ URL::to('/') . '/storage/files/' . $result }}">{{ $result }}</a><br>
                     @endforeach
                 </div>
                 @endisset
