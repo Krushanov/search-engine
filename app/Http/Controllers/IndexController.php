@@ -13,7 +13,7 @@ class IndexController extends Controller
         if ($handle) {
             while (($line = fgets($handle)) !== false) {
                 $key = str_replace(' ', '', substr($line, 0, 30));
-                $val = substr($line, 30);
+                $val = str_replace(PHP_EOL, '', substr($line, 30));
                 $dictionary[$key] = $val;
             }
 
@@ -28,7 +28,7 @@ class IndexController extends Controller
             $file = pathinfo($path);
             $files[$counter] = $file['filename'];
 
-            $content = file_get_contents($path);
+            $content = str_replace(PHP_EOL, '', file_get_contents($path));
             $words = IndexController::getWordsArray($content);
             foreach ($words as $str) {
                 $s = IndexController::tokenStemming($str, $dictionary);
@@ -52,24 +52,24 @@ class IndexController extends Controller
 
         $fileContent = "";
         foreach ($tokens as $key => $value) {
-            $fileContent .= $key . "[" . IndexController::arrayToStr($value) . "]\n";
+            $fileContent .= $key . "    [" . IndexController::arrayToStr($value) . "]\n";
         }
 
         Storage::put('tokens_index.txt', $fileContent);
     }
 
-    private function getWordsArray($content) {
+    public function getWordsArray($content) {
         return array_unique(preg_split('/[\s,]+/', preg_replace('/[\W]/', ' ', strtolower($content)), -1, PREG_SPLIT_NO_EMPTY));
     }
 
-    private function tokenStemming($input, $dictionary) {
+    public function tokenStemming($input, $dictionary) {
         if (isset($dictionary[$input]))
             return $dictionary[$input];
 
         return $input;
     }
 
-    private function arrayToStr($array) {
+    public function arrayToStr($array) {
         $str = "";
         foreach ($array as $value) {
             $str .= $value . ",";

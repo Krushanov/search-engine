@@ -24,9 +24,13 @@ Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
     Route::get('file_index', function () {
     	echo 'Обработка. Пожалуйста, подождите...';
+    	flush();
     	ob_flush();
     	$index_controller = new IndexController();
     	$index_controller->create_index_file();
     	return redirect()->back();
 	});
 });
+
+
+Route::get('/{search_text}', 'SearchController@index');

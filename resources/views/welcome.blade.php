@@ -16,12 +16,12 @@
                 color: #636b6f;
                 font-family: 'Nunito', sans-serif;
                 font-weight: 200;
-                height: 100vh;
+                min-height: 100vh;
                 margin: 0;
             }
 
             .full-height {
-                height: 100vh;
+                min-height: 100vh;
             }
 
             .flex-center {
@@ -68,6 +68,10 @@
                 text-transform: uppercase;
             }
 
+            .results {
+                margin-top: 30px;
+            }
+
             .m-b-md {
                 margin-bottom: 30px;
             }
@@ -83,6 +87,14 @@
                     <input type="text" placeholder="Введите слово или фразу для поиска">
                     <button>Найти</button>
                 </div>
+                @isset($results)
+                <div class="results">
+                    <b>Результаты поиска</b><br>
+                    @foreach ($results as $result)
+                        <a>{{ $result }}</a><br>
+                    @endforeach
+                </div>
+                @endisset
             </div>
         </div>
     </body>
